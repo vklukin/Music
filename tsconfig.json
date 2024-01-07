@@ -27,12 +27,7 @@
         "noImplicitAny": true,
         "strictPropertyInitialization": true,
         "useUnknownInCatchVariables": true,
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["src/*"],
-            "@public/*": ["public/*"],
-            "@components/*": ["src/components/*"]
-        }
+        "baseUrl": "."
     },
     "include": ["src/**/*", "src/core/types/declaretion.d.ts"],
     "references": [{ "path": "./tsconfig.node.json" }]

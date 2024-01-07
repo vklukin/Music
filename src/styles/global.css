@@ -1,9 +1,5 @@
 @import url("./fonts.css");
-@import url('./variables.css');
-
-html{
-    font-size: 10px;
-}
+@import url("./variables.css");
 
 *,
 *::before,
@@ -11,6 +7,14 @@ html{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html {
+    font-size: 10px;
+}
+
+body {
+    background-color: var(--body-bg-color);
 }
 
 ul {

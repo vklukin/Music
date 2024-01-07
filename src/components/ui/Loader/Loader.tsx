@@ -9,5 +9,10 @@ interface LoaderProps {
 const cx = classNames.bind(styles);
 
 export const Loader: React.FC<LoaderProps> = ({ scale = 1 }) => {
-    return <span className={cx("loader")} style={{transform: `scale(${scale})`}}></span>;
+    return (
+        <span
+            className={cx("loader")}
+            style={{ transform: `scale(${scale})` }}
+        ></span>
+    );
 };

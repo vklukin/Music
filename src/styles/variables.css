@@ -8,13 +8,17 @@
     --main-orange-color: #e4812f;
     --main-orange-lighter-color: #f9ae5c;
 
+    --body-bg-color: var(--white);
+
+    --header-bg-color: var(--white);
+
     --loader-columns-color: #ddd;
+
+    --logo-color: var(--main-orange-color);
 }
 
-[data-theme="light"] {
-    --header-bg-color: #fff;
-}
+:root:has(body[data-theme="dark"]) {
+    --body-bg-color: var(--main-black-color);
 
-[data-theme="dark"] {
-    --header-bg-color: ;
+    --header-bg-color: var(--main-black-lighter-color);
 }

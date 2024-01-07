@@ -1,6 +1,7 @@
-// TODO: проверить работоспособность
-// eslint-disable-next-line import/no-unresolved
-import LogoImage from "@public/images/Logo.svg";
+import classNames from "classnames/bind";
+
+import {ReactComponent as LogoImage} from "../../../assets/images/Logo.svg";
+import styles from "./style.module.css";
 
 interface LogoProps {
     width?: string;
@@ -8,13 +9,13 @@ interface LogoProps {
     className?: string;
 }
 
+const cx = classNames.bind(styles);
+
 export const Logo: React.FC<LogoProps> = ({ className, height, width }) => {
     return (
-        <img
-            src={LogoImage}
-            alt="Логотип сайта"
+        <LogoImage
             style={{ width, height }}
-            className={className}
+            className={cx("logo-icon", className)}
         />
     );
 };

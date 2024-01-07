@@ -3,8 +3,12 @@
     height: 7rem;
 
     background-color: var(--header-bg-color);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.logo{
-    height: 25px;
+.logo {
+    height: 2.5rem;
 }
