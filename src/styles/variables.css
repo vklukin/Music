@@ -17,6 +17,8 @@
     --theme-switch-execution: 0.4s;
 
     /* components */
+    --line-color: #e7e7e7;
+
     --body-bg-color: var(--white);
 
     --header-bg-color: var(--white);
@@ -27,6 +29,8 @@
 }
 
 :root:has(body[data-theme="dark"]) {
+    --line-color: #474747;
+
     --body-bg-color: var(--main-black-color);
 
     --header-bg-color: var(--main-black-lighter-color);
