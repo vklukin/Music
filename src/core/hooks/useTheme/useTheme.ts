@@ -1,32 +1,12 @@
-import { useCallback, useMemo, useState } from "react";
+import { useContext } from "react";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
-import { TTheme } from "../../types/theme";
-import { localStorageKeys } from "../../constants/localStorageKeys";
+export const useTheme = () => {
+    const context = useContext(ThemeContext);
 
-type UseThemeFunc = () => {
-    theme: TTheme;
-    setTheme: (newTheme: TTheme) => void;
-};
+    if (!context) {
+        throw new Error("The context is null!");
+    }
 
-const { theme: themeKey } = localStorageKeys;
-
-export const useTheme: UseThemeFunc = () => {
-    const [theme, setTheme] = useState<TTheme>(
-        () => (localStorage.getItem(themeKey) as TTheme) ?? "light"
-    );
-
-    const setNewTheme = useCallback<(newTheme: TTheme) => void>((newTheme) => {
-        setTheme(newTheme);
-        (document.querySelector("body") as HTMLBodyElement).dataset.theme =
-            newTheme;
-        localStorage.setItem(themeKey, newTheme);
-    }, []);
-
-    return useMemo(
-        () => ({
-            theme,
-            setTheme: setNewTheme
-        }),
-        [setNewTheme, theme]
-    );
+    return context;
 };

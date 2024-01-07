@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 
-import {ReactComponent as LogoImage} from "../../../assets/images/Logo.svg";
+import { ReactComponent as LogoImage } from "../../../assets/images/Logo.svg";
 import styles from "./style.module.css";
 
 interface LogoProps {
