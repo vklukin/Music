@@ -1,0 +1,29 @@
+.switch-button {
+    width: 5rem;
+    height: 2.6rem;
+
+    border: 2px solid var(--main-orange-color);
+    border-radius: 5rem;
+
+    display: flex;
+    align-items: center;
+
+    position: relative;
+    transition: transform var(--theme-switch-execution) ease-in-out;
+}
+
+.switch-button > div {
+    height: 1.8rem;
+    width: 1.8rem;
+
+    border-radius: 50%;
+
+    position: absolute;
+    left: 0.2rem;
+
+    background-color: var(--main-orange-lighter-color);
+}
+
+.dark-theme {
+    transform: rotate(180deg);
+}

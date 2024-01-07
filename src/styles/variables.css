@@ -1,0 +1,39 @@
+:root {
+    /* media breakpoints */
+    --max-screen-width: 144rem;
+    --min-screen-width: 37.5rem;
+
+    /* default colors */
+    --black: #000;
+    --white: #fff;
+
+    /* main colors */
+    --main-black-color: #0a0a0a;
+    --main-black-lighter-color: #28292f;
+    --main-white-color: #000;
+    --main-orange-color: #e4812f;
+    --main-orange-lighter-color: #f9ae5c;
+
+    --theme-switch-execution: 0.4s;
+
+    /* components */
+    --line-color: #e7e7e7;
+
+    --body-bg-color: var(--white);
+
+    --header-bg-color: var(--white);
+
+    --loader-columns-color: #ddd;
+
+    --logo-color: var(--main-orange-color);
+}
+
+:root:has(body[data-theme="dark"]) {
+    --line-color: #474747;
+
+    --body-bg-color: var(--main-black-color);
+
+    --header-bg-color: var(--main-black-lighter-color);
+
+    --logo-color: var(--main-orange-lighter-color);
+}

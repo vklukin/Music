@@ -1,0 +1,17 @@
+.header {
+    width: 100%;
+    height: 7rem;
+
+    background-color: var(--header-bg-color);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line-color);
+
+    padding: 0 3rem;
+}
+
+.logo {
+    height: 2.5rem;
+}
