@@ -1,6 +1,12 @@
-import { Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+
+import { MainLazy } from "../pages/Main";
 
 export function Router() {
-    return <Routes></Routes>;
+    return <Routes>
+        <Route>
+            <Route path="/" element={<MainLazy />} />
+        </Route>
+    </Routes>;
 }
 
