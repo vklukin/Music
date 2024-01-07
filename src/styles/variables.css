@@ -1,0 +1,11 @@
+:root{
+
+}
+
+[data-theme="light"]{
+    --header-bg-color: #fff;
+}
+
+[data-theme="dark"]{
+    --header-bg-color: ;
+}
