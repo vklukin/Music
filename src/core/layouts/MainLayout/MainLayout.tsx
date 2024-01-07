@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 
 export const MainLayout = () => {
     return (
-        <>
+        <div className={cx("layout-container")}>
             <Header />
             <Suspense
                 fallback={
@@ -22,6 +22,6 @@ export const MainLayout = () => {
             >
                 <Outlet />
             </Suspense>
-        </>
+        </div>
     );
 };

@@ -1,4 +1,8 @@
 :root {
+    /* media breakpoints */
+    --max-screen-width: 144rem;
+    --min-screen-width: 37.5rem;
+
     /* default colors */
     --black: #000;
     --white: #fff;
@@ -26,4 +30,6 @@
     --body-bg-color: var(--main-black-color);
 
     --header-bg-color: var(--main-black-lighter-color);
+
+    --logo-color: var(--main-orange-lighter-color);
 }

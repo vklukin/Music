@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 
 import style from "./style.module.css";
-import { useTheme } from "../../../core/hooks/useTheme";
+import { useTheme } from "../../../core/hooks/contexts/useTheme";
 
 interface ThemeSwitcherProps {
     className?: string;
