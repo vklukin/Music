@@ -1,13 +1,18 @@
 :root {
+    /* default colors */
     --black: #000;
     --white: #fff;
 
+    /* main colors */
     --main-black-color: #0a0a0a;
     --main-black-lighter-color: #28292f;
     --main-white-color: #000;
     --main-orange-color: #e4812f;
     --main-orange-lighter-color: #f9ae5c;
 
+    --theme-switch-execution: 0.4s;
+
+    /* components */
     --body-bg-color: var(--white);
 
     --header-bg-color: var(--white);
