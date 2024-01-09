@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import classnames from "classnames/bind";
 
 import styles from "./style.module.css";
@@ -10,7 +11,9 @@ const cx = classnames.bind(styles);
 export const Header = () => {
     return (
         <header className={cx("header")}>
-            <Logo className={cx("logo")} />
+            <Link to="/">
+                <Logo className={cx("logo")} />
+            </Link>
             <ThemeSwitcher />
         </header>
     );
