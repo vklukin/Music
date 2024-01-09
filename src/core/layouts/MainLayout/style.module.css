@@ -13,8 +13,3 @@
     width: 100%;
 }
 
-@media (min-width: 1440px) {
-    .layout-container {
-        width: 144rem;
-    }
-}
