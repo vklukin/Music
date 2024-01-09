@@ -9,7 +9,9 @@
     align-items: center;
 
     position: relative;
+
     transition: transform var(--theme-switch-execution) ease-in-out;
+    cursor: pointer;
 }
 
 .switch-button > div {
