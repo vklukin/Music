@@ -1,3 +1,4 @@
+import { BrowserRouter } from "react-router-dom";
 import classNames from "classnames/bind";
 
 import styles from "./style.module.css";
@@ -14,7 +15,7 @@ export const RouterLayout: React.FC<RouterLayoutProps> = ({ children }) => {
     return (
         <div className={cn("layout-container")}>
             <Header />
-            {children}
+            <BrowserRouter>{children}</BrowserRouter>
             {/* TODO: добавить плеер */}
         </div>
     );
