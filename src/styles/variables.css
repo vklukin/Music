@@ -13,9 +13,8 @@
     /* main colors */
     --main-black-color: #0a0a0a;
     --main-black-lighter-color: #28292f;
-    --main-white-color: #000;
-    --main-orange-color: #e4812f;
-    --main-orange-lighter-color: #f9ae5c;
+    --main-orange-color: #3a26e9;
+    --main-orange-lighter-color: #6675f7;
 
     --theme-switch-execution: 0.4s;
 
@@ -31,6 +30,10 @@
 }
 
 :root:has(body[data-theme="dark"]) {
+    /* main colors */
+    --main-orange-color: #27d0e7;
+    --main-orange-lighter-color: #5ceef9;
+
     --line-color: #474747;
     --body-bg-color: var(--main-black-color);
     --header-bg-color: var(--main-black-lighter-color);
