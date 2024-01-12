@@ -1,0 +1,10 @@
+.link {
+    font-weight: 400;
+    color: var(--link-color);
+}
+
+@media (hover: hover) {
+    .link:hover {
+        color: var(--link-color-active);
+    }
+}

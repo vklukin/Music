@@ -3,6 +3,9 @@
     --max-screen-width: 144rem;
     --min-screen-width: 37.5rem;
 
+    /* fonts */
+    --Inter: "Inter", sans-serif;
+
     /* default colors */
     --black: #000;
     --white: #fff;
@@ -18,22 +21,21 @@
 
     /* components */
     --line-color: #e7e7e7;
-
     --body-bg-color: var(--white);
-
     --header-bg-color: var(--white);
-
     --loader-columns-color: #ddd;
-
     --logo-color: var(--main-orange-color);
+    --link-color: #28292f;
+    --link-color-active: var(--main-orange-color);
+    --player-bg-color: #ffffff75;
 }
 
 :root:has(body[data-theme="dark"]) {
     --line-color: #474747;
-
     --body-bg-color: var(--main-black-color);
-
     --header-bg-color: var(--main-black-lighter-color);
-
     --logo-color: var(--main-orange-lighter-color);
+    --link-color: #fff;
+    --link-color-active: var(--main-orange-lighter-color);
+    --player-bg-color: #28292f75;
 }

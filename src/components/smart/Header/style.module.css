@@ -12,6 +12,19 @@
     padding: 0 3rem;
 }
 
+.haeder-kids {
+    display: flex;
+    align-items: center;
+}
+
 .logo {
     height: 2.5rem;
+}
+
+.header-links-feed {
+    margin-left: 15rem;
+}
+
+.header-kids__links {
+    font-size: 1.4rem;
 }

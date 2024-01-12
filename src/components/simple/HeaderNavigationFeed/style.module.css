@@ -1,0 +1,12 @@
+.feed {
+    display: flex;
+    align-items: flex-start;
+    gap: 4rem;
+    margin-top: 1.3rem;
+}
+
+.active-link {
+    padding-bottom: 1rem;
+    border-radius: 0.2rem;
+    border-bottom: 0.3rem solid var(--main-orange-lighter-color);
+}

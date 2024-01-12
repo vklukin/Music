@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./style.module.css";
 
 import { Header } from "../../../components/smart/Header";
+import { Player } from "../../../components/ordinary/Player";
 
 interface RouterLayoutProps {
     children: React.ReactNode;
@@ -15,7 +16,7 @@ export const RouterLayout: React.FC<RouterLayoutProps> = ({ children }) => {
         <div className={cn("layout-container")}>
             <Header />
             {children}
-            {/* TODO: добавить плеер */}
+            <Player />
         </div>
     );
 };
