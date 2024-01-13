@@ -1,0 +1,27 @@
+.controls-wrapper {
+    position: absolute;
+    left: 30px;
+    bottom: 0;
+
+    height: var(--player-height);
+
+    display: flex;
+    align-items: center;
+
+    gap: 2rem;
+}
+
+.button {
+    width: 2.8rem;
+    height: 2.8rem;
+
+    border: none !important;
+}
+
+.button svg {
+    transform: scale(1.166);
+}
+
+.button svg path[fill]:not([fill="none"]) {
+    fill: var(--main-color);
+}

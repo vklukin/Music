@@ -24,6 +24,7 @@ export const HeaderNavigationFeed: React.FC<HeaderNavigationFeedProps> = ({
     return (
         <div className={cn("feed", className)}>
             {navigation.map(({ link, title }, index) => (
+                // TODO: поменять ссылку на кнопку
                 <Link
                     key={index}
                     className={cn(
