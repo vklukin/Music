@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 import { PlayerControls } from "../../smart/PlayerControls";
 import { TrackContent } from "../TrackContent";
 import { TrackControls } from "../TrackControls";
+import { TrackSecondControls } from "../../smart/TrackSecondControls";
 
 const cn = classNames.bind(styles);
 
@@ -16,6 +17,7 @@ export const Player = () => {
                 <TrackContent />
                 <TrackControls />
             </div>
+            <TrackSecondControls />
         </div>
     );
 };

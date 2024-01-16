@@ -1,7 +1,7 @@
-.controls-wrapper {
+.track-second-controls__wrapper {
     position: absolute;
-    left: 3rem;
     bottom: 0;
+    right: 3rem;
 
     height: var(--player-height);
 
@@ -12,16 +12,25 @@
 }
 
 .button {
+    border: none;
+    overflow: hidden;
     width: 2.8rem;
     height: 2.8rem;
-
-    border: none !important;
 }
 
 .button svg {
-    transform: scale(1.166);
+    height: 100%;
 }
 
 .button svg path[fill]:not([fill="none"]) {
     fill: var(--main-color);
+}
+.button svg path[stroke]:not([stroke="none"]) {
+    stroke: var(--main-color);
+}
+
+.svg-sprite {
+    height: 84px;
+
+    transform: translateY(-28px);
 }

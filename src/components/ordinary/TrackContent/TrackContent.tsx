@@ -11,6 +11,7 @@ const timeout = new SetTimeOut();
 export const TrackContent = () => {
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
+    // TODO: переделать на animation
     function onMouseOver() {
         if (!wrapperRef.current) return;
         wrapperRef.current.setAttribute(
