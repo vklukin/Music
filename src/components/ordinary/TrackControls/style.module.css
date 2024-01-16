@@ -1,0 +1,20 @@
+.track-controls__wrapper {
+    margin-left: 3rem;
+
+    height: var(--player-height);
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.button {
+    border: none;
+}
+
+.button svg path[fill]:not([fill="none"]) {
+    fill: var(--main-color);
+}
+.button svg path[stroke]:not([stroke="none"]) {
+    stroke: var(--main-color);
+}

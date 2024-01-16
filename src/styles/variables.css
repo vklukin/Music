@@ -31,7 +31,7 @@
     --button-text-color: #28292f;
     --track-info-color: var(--black);
     --track-info-hovered-color: var(--main-color);
-    --track-info-transition-time: 0.1s;
+    --track-info-transition-time: 0.2s;
 }
 
 :root:has(body[data-theme="dark"]) {

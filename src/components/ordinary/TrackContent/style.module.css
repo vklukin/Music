@@ -1,11 +1,7 @@
 .track-content__wrapper {
     --track-info-container-width: 15rem;
 
-    position: absolute;
-    bottom: 0;
-    left: 25rem;
-
-    height: 6rem;
+    height: var(--player-height);
     width: auto;
 
     display: flex;
@@ -14,8 +10,8 @@
 }
 
 .track-content__wrapper img {
-    height: 5.5rem;
-    width: 5.5rem;
+    height: calc(100% - 0.5rem);
+    width: calc(100% - 0.5rem);
     object-fit: contain;
 }
 
