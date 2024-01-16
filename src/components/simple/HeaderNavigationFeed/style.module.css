@@ -8,5 +8,5 @@
 .active-link {
     padding-bottom: 1rem;
     border-radius: 0.2rem;
-    border-bottom: 0.3rem solid var(--main-orange-lighter-color);
+    border-bottom: 0.3rem solid var(--main-lighter-color);
 }

@@ -19,9 +19,9 @@ export const PlayerControls = () => {
         navigate("/history");
     };
 
+    // TODO: добавить логику работы к кнопкам
     return (
         <div className={cn("controls-wrapper")}>
-            {/* TODO: добавить логику работы к кнопкам */}
             <Button className={cn("button")} title="Назад [J]">
                 <TrackPrev />
             </Button>

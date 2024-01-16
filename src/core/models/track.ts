@@ -11,6 +11,7 @@ export interface ITrack {
     authorName: string;
     trackName: string;
     duration: number;
+    thumbnail: string;
 }
 
 export interface ITrackQueryParams {

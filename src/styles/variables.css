@@ -29,6 +29,9 @@
     --player-bg-color: #ffffff75;
     --player-height: 6rem;
     --button-text-color: #28292f;
+    --track-info-color: var(--black);
+    --track-info-hovered-color: var(--main-color);
+    --track-info-transition-time: 0.1s;
 }
 
 :root:has(body[data-theme="dark"]) {
@@ -44,4 +47,6 @@
     --link-color-active: var(--main-lighter-color);
     --player-bg-color: #28292f75;
     --button-text-color: #fff;
+    --track-info-color: var(--white);
+    --track-info-hovered-color: var(--main-color);
 }
