@@ -2,12 +2,15 @@ import "./styles/global.css";
 
 import { Router } from "./router";
 import { RouterLayout } from "./core/layouts/RouterLayout";
+import { PlayerContextProvider } from "./core/contexts/PlayerContext";
 
 function App() {
     return (
-        <RouterLayout>
-            <Router />
-        </RouterLayout>
+        <PlayerContextProvider>
+            <RouterLayout>
+                <Router />
+            </RouterLayout>
+        </PlayerContextProvider>
     );
 }
 
