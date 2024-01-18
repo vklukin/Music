@@ -1,10 +1,18 @@
 import { createContext, useCallback, useMemo, useState } from "react";
 
+import { TSetState } from "../../types/react";
+
 interface PlayerContextProps {
-    startMusic: () => void;
+    volumeGain: number;
+    currentDuration: number;
+    isPlaying: boolean;
+    setVolumeGain: TSetState<number>;
+    setCurrentDuration: TSetState<number>;
+    playMusic: () => void;
     pauseMusic: () => void;
     nextMusic: () => void;
     prevMusic: () => void;
+    toggleMusic: () => void;
 }
 
 const actx = new AudioContext();
@@ -22,10 +30,10 @@ export const PlayerContextProvider = ({
     children: React.ReactNode;
 }) => {
     const [volumeGain, setVolumeGain] = useState<number>(1);
-    const [currentDuration, setCurrentDuration] = useState(0);
+    const [currentDuration, setCurrentDuration] = useState<number>(0);
     const [isPlaying, setIsPlaying] = useState(false);
 
-    const startMusic = useCallback(() => {
+    const playMusic = useCallback(() => {
         if (actx.state === "suspended") actx.resume();
         audio.play();
         setIsPlaying(true);
@@ -36,36 +44,43 @@ export const PlayerContextProvider = ({
         setIsPlaying(false);
     }, []);
 
+    const toggleMusic = useCallback(() => {
+        if (isPlaying) pauseMusic();
+        else playMusic();
+    }, [isPlaying, pauseMusic, playMusic]);
+
     const nextMusic = useCallback(() => {
         // TODO: сделать функционал для получения музыки
-        startMusic();
-    }, [startMusic]);
+        playMusic();
+    }, [playMusic]);
 
     const prevMusic = useCallback(() => {
         // TODO: сделать функционал для получения музыки
-        startMusic();
-    }, [startMusic]);
+        playMusic();
+    }, [playMusic]);
 
     const value = useMemo(
         () => ({
             volumeGain,
-            setVolumeGain,
-            currentDuration,
-            setCurrentDuration,
-            startMusic,
-            pauseMusic,
-            nextMusic,
-            prevMusic,
-            isPlaying
-        }),
-        [
             currentDuration,
             isPlaying,
-            nextMusic,
+            setVolumeGain,
+            setCurrentDuration,
+            playMusic,
             pauseMusic,
+            nextMusic,
             prevMusic,
-            startMusic,
-            volumeGain
+            toggleMusic
+        }),
+        [
+            volumeGain,
+            currentDuration,
+            isPlaying,
+            playMusic,
+            pauseMusic,
+            nextMusic,
+            prevMusic,
+            toggleMusic
         ]
     );
     return (
