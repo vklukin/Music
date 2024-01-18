@@ -1,13 +1,9 @@
 import { createContext, useCallback, useMemo, useState } from "react";
 
-import { TSetState } from "../../types/react";
-
 interface PlayerContextProps {
     volumeGain: number;
     currentDuration: number;
     isPlaying: boolean;
-    setVolumeGain: TSetState<number>;
-    setCurrentDuration: TSetState<number>;
     playMusic: () => void;
     pauseMusic: () => void;
     nextMusic: () => void;
@@ -29,25 +25,27 @@ export const PlayerContextProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
-    const [volumeGain, setVolumeGain] = useState<number>(1);
-    const [currentDuration, setCurrentDuration] = useState<number>(0);
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [playerState, setPlayerState] = useState({
+        volumeGain: 1,
+        currentDuration: 0,
+        isPlaying: false
+    });
 
     const playMusic = useCallback(() => {
         if (actx.state === "suspended") actx.resume();
         audio.play();
-        setIsPlaying(true);
+        setPlayerState((prev) => ({ ...prev, isPlaying: true }));
     }, []);
 
     const pauseMusic = useCallback(() => {
         audio.pause();
-        setIsPlaying(false);
+        setPlayerState((prev) => ({ ...prev, isPlaying: false }));
     }, []);
 
     const toggleMusic = useCallback(() => {
-        if (isPlaying) pauseMusic();
+        if (playerState.isPlaying) pauseMusic();
         else playMusic();
-    }, [isPlaying, pauseMusic, playMusic]);
+    }, [pauseMusic, playMusic, playerState.isPlaying]);
 
     const nextMusic = useCallback(() => {
         // TODO: сделать функционал для получения музыки
@@ -61,11 +59,9 @@ export const PlayerContextProvider = ({
 
     const value = useMemo(
         () => ({
-            volumeGain,
-            currentDuration,
-            isPlaying,
-            setVolumeGain,
-            setCurrentDuration,
+            volumeGain: playerState.volumeGain,
+            currentDuration: playerState.currentDuration,
+            isPlaying: playerState.isPlaying,
             playMusic,
             pauseMusic,
             nextMusic,
@@ -73,12 +69,12 @@ export const PlayerContextProvider = ({
             toggleMusic
         }),
         [
-            volumeGain,
-            currentDuration,
-            isPlaying,
-            playMusic,
-            pauseMusic,
+            playerState.currentDuration,
+            playerState.isPlaying,
+            playerState.volumeGain,
             nextMusic,
+            pauseMusic,
+            playMusic,
             prevMusic,
             toggleMusic
         ]
