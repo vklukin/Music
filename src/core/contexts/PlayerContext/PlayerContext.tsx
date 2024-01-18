@@ -1,5 +1,7 @@
 import { createContext, useCallback, useMemo, useState } from "react";
 
+import { ITrack } from "../../models/track";
+
 interface PlayerContextProps {
     volumeGain: number;
     currentDuration: number;
@@ -9,6 +11,15 @@ interface PlayerContextProps {
     nextMusic: () => void;
     prevMusic: () => void;
     toggleMusic: () => void;
+    toggleRandom: () => void;
+}
+
+interface IInitialState {
+    volumeGain: number;
+    currentDuration: number;
+    isPlaying: boolean;
+    currentTrack: ITrack | null;
+    isRandom: boolean;
 }
 
 const actx = new AudioContext();
@@ -25,10 +36,12 @@ export const PlayerContextProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
-    const [playerState, setPlayerState] = useState({
+    const [playerState, setPlayerState] = useState<IInitialState>({
         volumeGain: 1,
         currentDuration: 0,
-        isPlaying: false
+        isPlaying: false,
+        currentTrack: null,
+        isRandom: false
     });
 
     const playMusic = useCallback(() => {
@@ -57,26 +70,34 @@ export const PlayerContextProvider = ({
         playMusic();
     }, [playMusic]);
 
+    const toggleRandom = useCallback(() => {
+        setPlayerState((prev) => ({ ...prev, isRandom: !prev.isRandom }));
+    }, []);
+
     const value = useMemo(
         () => ({
             volumeGain: playerState.volumeGain,
             currentDuration: playerState.currentDuration,
             isPlaying: playerState.isPlaying,
+            currentTrack: playerState.currentTrack,
             playMusic,
             pauseMusic,
             nextMusic,
             prevMusic,
-            toggleMusic
+            toggleMusic,
+            toggleRandom
         }),
         [
             playerState.currentDuration,
             playerState.isPlaying,
             playerState.volumeGain,
+            playerState.currentTrack,
             nextMusic,
             pauseMusic,
             playMusic,
             prevMusic,
-            toggleMusic
+            toggleMusic,
+            toggleRandom
         ]
     );
     return (

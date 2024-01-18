@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 
 import styles from "./style.module.css";
 import imageNotFound from "../../../assets/images/imageNotFound.png";
-import { SetTimeOut } from "../../../core/utils/SetTimeOut/SetTimeOut";
+import { SetTimeOut } from "../../../core/utils/SetTimeOut";
 
 const cn = classNames.bind(styles);
 const timeout = new SetTimeOut();
