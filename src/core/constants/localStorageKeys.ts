@@ -1,3 +1,6 @@
 export const localStorageKeys = {
-    theme: "theme"
+    theme: "theme",
+    isRandom: "isRandom",
+    currentTrack: "currentTrack",
+    volumeGain: "volumeGain"
 };

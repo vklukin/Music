@@ -1,6 +1,8 @@
 import { createContext, useCallback, useMemo, useState } from "react";
 
 import { ITrack } from "../../models/track";
+import { usePlayerContextHooks } from "./PlayerContext.hooks";
+import { localStorageKeys } from "../../constants/localStorageKeys";
 
 interface PlayerContextProps {
     volumeGain: number;
@@ -14,7 +16,7 @@ interface PlayerContextProps {
     toggleRandom: () => void;
 }
 
-interface IInitialState {
+export interface IPlayerInitialState {
     volumeGain: number;
     currentDuration: number;
     isPlaying: boolean;
@@ -22,9 +24,19 @@ interface IInitialState {
     isRandom: boolean;
 }
 
+const { currentTrack } = localStorageKeys;
+const playerInitialState: IPlayerInitialState = {
+    volumeGain: 1,
+    currentDuration: 0,
+    isPlaying: false,
+    currentTrack: null,
+    isRandom: false
+};
+
 const actx = new AudioContext();
 const audioVolume = actx.createGain();
 const audio = new Audio();
+audio.crossOrigin = "anonymous";
 const source = actx.createMediaElementSource(audio);
 
 source.connect(audioVolume);
@@ -36,13 +48,14 @@ export const PlayerContextProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
-    const [playerState, setPlayerState] = useState<IInitialState>({
-        volumeGain: 1,
-        currentDuration: 0,
-        isPlaying: false,
-        currentTrack: null,
-        isRandom: false
-    });
+    const [playerState, setPlayerState] =
+        useState<IPlayerInitialState>(playerInitialState);
+
+    const setNewTrack = useCallback<(track: ITrack) => void>((track) => {
+        audio.src = track.link;
+        setPlayerState((prev) => ({ ...prev, currentTrack: track }));
+        localStorage.setItem(currentTrack, JSON.stringify(track));
+    }, []);
 
     const playMusic = useCallback(() => {
         if (actx.state === "suspended") actx.resume();
@@ -73,6 +86,8 @@ export const PlayerContextProvider = ({
     const toggleRandom = useCallback(() => {
         setPlayerState((prev) => ({ ...prev, isRandom: !prev.isRandom }));
     }, []);
+
+    usePlayerContextHooks({ setPlayerState, playerState, setNewTrack });
 
     const value = useMemo(
         () => ({

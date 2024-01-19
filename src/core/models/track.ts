@@ -10,8 +10,8 @@ export interface ITrack {
     id: number;
     authorName: string;
     trackName: string;
-    duration: number;
     thumbnail: string;
+    link: string;
 }
 
 export interface ITrackQueryParams {
