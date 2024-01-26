@@ -3,6 +3,7 @@ import { createContext, useCallback, useMemo, useState } from "react";
 import { ITrack } from "../../models/track";
 import { usePlayerContextHooks } from "./PlayerContext.hooks";
 import { localStorageKeys } from "../../constants/localStorageKeys";
+import { trackAPI } from "../../api/track";
 
 interface PlayerContextProps {
     volumeGain: number;
@@ -73,10 +74,10 @@ export const PlayerContextProvider = ({
         else playMusic();
     }, [pauseMusic, playMusic, playerState.isPlaying]);
 
-    const nextMusic = useCallback(() => {
-        // TODO: сделать функционал для получения музыки
+    const nextMusic = useCallback(async () => {
+        setNewTrack(await trackAPI.getRandomTrack());
         playMusic();
-    }, [playMusic]);
+    }, [playMusic, setNewTrack]);
 
     const prevMusic = useCallback(() => {
         // TODO: сделать функционал для получения музыки
@@ -87,7 +88,11 @@ export const PlayerContextProvider = ({
         setPlayerState((prev) => ({ ...prev, isRandom: !prev.isRandom }));
     }, []);
 
-    usePlayerContextHooks({ setPlayerState, playerState, setNewTrack });
+    usePlayerContextHooks({
+        playerState,
+        setPlayerState,
+        setNewTrack
+    });
 
     const value = useMemo(
         () => ({

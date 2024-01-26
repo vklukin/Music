@@ -12,9 +12,9 @@ export const TrackNextButton: React.FC<TrackNextButtonProps> = ({
     className,
     onClick
 }) => {
-    const { prevMusic } = usePlayerContext();
+    const { nextMusic } = usePlayerContext();
     const onButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        prevMusic();
+        nextMusic();
         onClick && onClick(e);
     };
 
