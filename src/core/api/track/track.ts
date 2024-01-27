@@ -32,6 +32,22 @@ class Track {
         }
     }
 
+    async getPreviousTrackId(): Promise<number> {
+        try {
+            const {
+                data: { trackId }
+            } = await api.get<ITrackId>("/previous-track");
+            return trackId;
+        } catch (e) {
+            if (isApiError(e)) {
+                throw new Error(e.message);
+            }
+            throw new Error(
+                "Произошла ошибка при запросе id предыдущего трека"
+            );
+        }
+    }
+
     async getRandomTrack(): Promise<ITrack> {
         try {
             const trackId = await this.getRandomTrackId();
@@ -42,6 +58,19 @@ class Track {
                 throw new Error(e.message);
             }
             throw new Error("Произошла ошибка при запросе случайного трека");
+        }
+    }
+
+    async getPreviousTrack(): Promise<ITrack> {
+        try {
+            const trackId = await this.getPreviousTrackId();
+            const response = await this.getTrackInfoById(trackId);
+            return response;
+        } catch (e) {
+            if (isApiError(e)) {
+                throw new Error(e.message);
+            }
+            throw new Error("Произошла ошибка при запросе предыдущего трека");
         }
     }
 }

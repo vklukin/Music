@@ -79,10 +79,14 @@ export const PlayerContextProvider = ({
         playMusic();
     }, [playMusic, setNewTrack]);
 
-    const prevMusic = useCallback(() => {
-        // TODO: сделать функционал для получения музыки
+    const prevMusic = useCallback(async () => {
+        if (audio.currentTime > 5) {
+            audio.currentTime = 0;
+        } else {
+            setNewTrack(await trackAPI.getPreviousTrack());
+        }
         playMusic();
-    }, [playMusic]);
+    }, [playMusic, setNewTrack]);
 
     const toggleRandom = useCallback(() => {
         setPlayerState((prev) => ({ ...prev, isRandom: !prev.isRandom }));
