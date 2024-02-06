@@ -4,11 +4,15 @@ import classNames from "classnames/bind";
 import styles from "./style.module.css";
 import imageNotFound from "../../../assets/images/imageNotFound.png";
 import { SetTimeOut } from "../../../core/utils/SetTimeOut";
+import { usePlayerContext } from "../../../core/hooks/contexts/usePlayerContext";
+import { TRACK_INFO_MAX_WIDTH } from "../../../core/constants/track";
 
 const cn = classNames.bind(styles);
 const timeout = new SetTimeOut();
 
 export const TrackContent = () => {
+    const { currentTrack } = usePlayerContext();
+
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
     // TODO: переделать на animation
@@ -25,11 +29,10 @@ export const TrackContent = () => {
         if (!wrapperRef.current) return;
         wrapperRef.current.setAttribute(
             "style",
-            "--track-info-container-width: 15rem"
+            `--track-info-container-width: ${TRACK_INFO_MAX_WIDTH}`
         );
     }
 
-    // TODO: добавить функциональность
     return (
         <div
             className={cn("track-content__wrapper")}
@@ -37,13 +40,16 @@ export const TrackContent = () => {
             onMouseLeave={onMouseNotOver}
             ref={wrapperRef}
         >
-            <img src={imageNotFound} alt="Изображение трека" />
+            <img
+                src={currentTrack?.thumbnail || imageNotFound}
+                alt="Изображение трека"
+            />
             <div className={cn("track-content__info")}>
                 <a href="#" className={cn("info__track-name")}>
-                    testtesttesttesttesttesttesttesttesttesttesttesttesttest
+                    {currentTrack?.trackName ?? "Название трека не найдено"}
                 </a>
                 <a href="#" className={cn("info__author-name")}>
-                    testtest
+                    {currentTrack?.authorName ?? "Исполнитель не найден"}
                 </a>
             </div>
         </div>

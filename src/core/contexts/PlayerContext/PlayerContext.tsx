@@ -9,6 +9,7 @@ interface PlayerContextProps {
     volumeGain: number;
     currentDuration: number;
     isPlaying: boolean;
+    currentTrack: ITrack | null;
     playMusic: () => void;
     pauseMusic: () => void;
     nextMusic: () => void;
@@ -61,8 +62,10 @@ export const PlayerContextProvider = ({
     const playMusic = useCallback(() => {
         if (actx.state === "suspended") actx.resume();
         audio.play();
+        console.log(playerState.currentTrack);
+
         setPlayerState((prev) => ({ ...prev, isPlaying: true }));
-    }, []);
+    }, [playerState.currentTrack]);
 
     const pauseMusic = useCallback(() => {
         audio.pause();
