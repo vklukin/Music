@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { TSetState } from "../../types/react";
 import { IPlayerInitialState } from "./PlayerContext";
@@ -8,6 +8,7 @@ import { ITrack } from "../../models/track";
 
 interface usePlayerContextProps {
     playerState: IPlayerInitialState;
+    audio: HTMLAudioElement;
     setPlayerState: TSetState<IPlayerInitialState>;
     setNewTrack: (track: ITrack) => void;
 }
@@ -16,14 +17,27 @@ const { isRandom, currentTrack, volumeGain } = localStorageKeys;
 
 export const usePlayerContextHooks = ({
     playerState,
+    audio,
     setPlayerState,
     setNewTrack
 }: usePlayerContextProps) => {
+    const [previousAudioTime, setPreviousAudioTime] = useState(0);
+
     async function apiQuery() {
         return await trackAPI.getRandomTrack();
     }
 
     useEffect(() => {
+        audio.addEventListener("timeupdate", () => {
+            if (Math.trunc(audio.currentTime) > previousAudioTime) {
+                setPlayerState((prev) => ({
+                    ...prev,
+                    currentDuration: Math.trunc(audio.currentTime)
+                }));
+                setPreviousAudioTime(Math.trunc(audio.currentTime));
+            }
+        });
+
         if (!localStorage.getItem(isRandom)) {
             localStorage.setItem(isRandom, JSON.stringify(false));
         }

@@ -97,6 +97,7 @@ export const PlayerContextProvider = ({
 
     usePlayerContextHooks({
         playerState,
+        audio,
         setPlayerState,
         setNewTrack
     });
