@@ -1,6 +1,4 @@
 .track-content__wrapper {
-    --track-info-container-width: 15rem;
-
     height: var(--player-height);
     width: auto;
 
@@ -10,24 +8,25 @@
 }
 
 .track-content__wrapper img {
-    height: calc(100% - 0.5rem);
-    width: calc(100% - 0.5rem);
+    height: 5rem;
+    width: 5rem;
     object-fit: contain;
 }
 
 .track-content__info {
     height: inherit;
-    width: auto;
+    max-width: var(--track-info-width);
 
     display: flex;
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
     gap: 0.2rem;
+
+    transition: width var(--track-info-transition-time);
 }
 
-.info__track-name,
-.info__author-name {
+.track-info {
     color: var(--track-info-color);
     font-size: 1.5rem;
     overflow: hidden;
@@ -35,9 +34,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 
-    transition: width var(--track-info-transition-time) linear;
-
-    width: var(--track-info-container-width);
+    width: 100%;
 }
 
 .info__track-name {
@@ -45,8 +42,12 @@
 }
 
 @media (hover: hover) {
-    .info__track-name:hover,
-    .info__author-name:hover {
+    .track-info:hover {
         color: var(--track-info-hovered-color);
+    }
+
+    .track-content__wrapper .track-content__hover {
+        width: 100%;
+        max-width: none;
     }
 }

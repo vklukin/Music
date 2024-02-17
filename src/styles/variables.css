@@ -32,6 +32,8 @@
     --track-info-color: var(--black);
     --track-info-hovered-color: var(--main-color);
     --track-info-transition-time: 0.2s;
+    --track-info-width: 20rem;
+    --track-info-transition-delay: .6s;
 }
 
 :root:has(body[data-theme="dark"]) {

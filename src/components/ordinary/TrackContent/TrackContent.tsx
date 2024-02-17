@@ -1,11 +1,10 @@
-import { useRef } from "react";
+import { useState } from "react";
 import classNames from "classnames/bind";
 
 import styles from "./style.module.css";
 import imageNotFound from "../../../assets/images/imageNotFound.png";
-import { SetTimeOut } from "../../../core/utils/SetTimeOut";
 import { usePlayerContext } from "../../../core/hooks/contexts/usePlayerContext";
-import { TRACK_INFO_MAX_WIDTH } from "../../../core/constants/track";
+import { SetTimeOut } from "../../../core/utils/SetTimeOut";
 
 const cn = classNames.bind(styles);
 const timeout = new SetTimeOut();
@@ -13,42 +12,39 @@ const timeout = new SetTimeOut();
 export const TrackContent = () => {
     const { currentTrack } = usePlayerContext();
 
-    const wrapperRef = useRef<HTMLDivElement | null>(null);
+    const [isMouseEnter, setIsMouseEnter] = useState<boolean>(false);
 
-    // TODO: переделать на animation
-    function onMouseOver() {
-        if (!wrapperRef.current) return;
-        wrapperRef.current.setAttribute(
-            "style",
-            "--track-info-container-width: 100%"
-        );
+    function onMouseEnter() {
+        timeout.start(() => {
+            setIsMouseEnter(true);
+        }, 700);
     }
-    function onMouseNotOver() {
-        timeout._timeout && timeout.stop();
 
-        if (!wrapperRef.current) return;
-        wrapperRef.current.setAttribute(
-            "style",
-            `--track-info-container-width: ${TRACK_INFO_MAX_WIDTH}`
-        );
+    function onMouseLeave() {
+        if (timeout._timeout) timeout.stop();
+
+        timeout.start(() => {
+            setIsMouseEnter(false);
+        }, 700);
     }
 
     return (
-        <div
-            className={cn("track-content__wrapper")}
-            onMouseEnter={() => timeout.start(onMouseOver, 1000)}
-            onMouseLeave={onMouseNotOver}
-            ref={wrapperRef}
-        >
+        <div className={cn("track-content__wrapper")}>
             <img
                 src={currentTrack?.thumbnail || imageNotFound}
                 alt="Изображение трека"
             />
-            <div className={cn("track-content__info")}>
-                <a href="#" className={cn("info__track-name")}>
+            <div
+                className={cn("track-content__info", {
+                    "track-content__hover": isMouseEnter
+                })}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+            >
+                <a href="#" className={cn("info__track-name", "track-info")}>
                     {currentTrack?.trackName ?? "Название трека не найдено"}
                 </a>
-                <a href="#" className={cn("info__author-name")}>
+                <a href="#" className={cn("info__author-name", "track-info")}>
                     {currentTrack?.authorName ?? "Исполнитель не найден"}
                 </a>
             </div>
