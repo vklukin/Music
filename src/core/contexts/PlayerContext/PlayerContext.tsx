@@ -55,7 +55,11 @@ export const PlayerContextProvider = ({
 
     const setNewTrack = useCallback<(track: ITrack) => void>((track) => {
         audio.src = track.link;
-        setPlayerState((prev) => ({ ...prev, currentTrack: track }));
+        setPlayerState((prev) => ({
+            ...prev,
+            currentTrack: track,
+            currentDuration: 0
+        }));
         localStorage.setItem(currentTrack, JSON.stringify(track));
     }, []);
 
@@ -96,7 +100,6 @@ export const PlayerContextProvider = ({
     }, []);
 
     usePlayerContextHooks({
-        playerState,
         audio,
         setPlayerState,
         setNewTrack

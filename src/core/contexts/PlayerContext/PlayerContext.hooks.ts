@@ -5,18 +5,19 @@ import { IPlayerInitialState } from "./PlayerContext";
 import { localStorageKeys } from "../../constants/localStorageKeys";
 import { trackAPI } from "../../api/track";
 import { ITrack } from "../../models/track";
+import { messages } from "../../utils/messages";
+import { isApiError } from "../../utils/isApiError";
 
 interface usePlayerContextProps {
-    playerState: IPlayerInitialState;
     audio: HTMLAudioElement;
     setPlayerState: TSetState<IPlayerInitialState>;
     setNewTrack: (track: ITrack) => void;
 }
 
-const { isRandom, currentTrack, volumeGain } = localStorageKeys;
+const { isRandom, volumeGain } = localStorageKeys;
+const { error } = messages({});
 
 export const usePlayerContextHooks = ({
-    playerState,
     audio,
     setPlayerState,
     setNewTrack
@@ -38,28 +39,16 @@ export const usePlayerContextHooks = ({
             }
         });
 
-        if (!localStorage.getItem(isRandom)) {
-            localStorage.setItem(isRandom, JSON.stringify(false));
-        }
-        if (!localStorage.getItem(currentTrack)) {
-            localStorage.setItem(currentTrack, JSON.stringify(null));
-        }
-        if (!localStorage.getItem(volumeGain)) {
-            localStorage.setItem(volumeGain, JSON.stringify(1));
-        }
-
-        if (!playerState.currentTrack) {
-            apiQuery().then((data) => setNewTrack(data));
-            // TODO: добавить вывод ошибки на всплывающее окно
-        }
+        apiQuery()
+            .then((data) => setNewTrack(data))
+            .catch((e) => error(isApiError(e) ? e.message : e));
 
         setPlayerState((prev) => ({
             ...prev,
-            isRandom: JSON.parse(localStorage.getItem(isRandom) as string),
-            volumeGain: JSON.parse(localStorage.getItem(volumeGain) as string),
-            currentTrack: JSON.parse(
-                localStorage.getItem(currentTrack) as string
-            )
+            isRandom:
+                JSON.parse(localStorage.getItem(isRandom) as string) || false,
+            volumeGain:
+                JSON.parse(localStorage.getItem(volumeGain) as string) || 1
         }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
