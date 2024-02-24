@@ -10,6 +10,7 @@ import { isApiError } from "../../utils/isApiError";
 
 interface usePlayerContextProps {
     audio: HTMLAudioElement;
+    nextMusic: () => void;
     setPlayerState: TSetState<IPlayerInitialState>;
     setNewTrack: (track: ITrack) => void;
 }
@@ -20,7 +21,8 @@ const { error } = messages({});
 export const usePlayerContextHooks = ({
     audio,
     setPlayerState,
-    setNewTrack
+    setNewTrack,
+    nextMusic
 }: usePlayerContextProps) => {
     const [previousAudioTime, setPreviousAudioTime] = useState(0);
 
@@ -38,6 +40,7 @@ export const usePlayerContextHooks = ({
                 setPreviousAudioTime(Math.trunc(audio.currentTime));
             }
         });
+        audio.addEventListener("ended", nextMusic);
 
         apiQuery()
             .then((data) => setNewTrack(data))

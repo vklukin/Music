@@ -66,10 +66,8 @@ export const PlayerContextProvider = ({
     const playMusic = useCallback(() => {
         if (actx.state === "suspended") actx.resume();
         audio.play();
-        console.log(playerState.currentTrack);
-
         setPlayerState((prev) => ({ ...prev, isPlaying: true }));
-    }, [playerState.currentTrack]);
+    }, []);
 
     const pauseMusic = useCallback(() => {
         audio.pause();
@@ -102,7 +100,8 @@ export const PlayerContextProvider = ({
     usePlayerContextHooks({
         audio,
         setPlayerState,
-        setNewTrack
+        setNewTrack,
+        nextMusic
     });
 
     const value = useMemo(

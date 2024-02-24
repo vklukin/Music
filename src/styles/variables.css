@@ -34,6 +34,9 @@
     --track-info-transition-time: 0.2s;
     --track-info-width: 20rem;
     --track-info-transition-delay: .6s;
+    --track-progress-bar-height: 1.5rem;
+    --track-progress-bar-default-color: #e9e8e8;
+    --track-progress-bar-time-color: #000;
 }
 
 :root:has(body[data-theme="dark"]) {
@@ -51,4 +54,6 @@
     --button-text-color: #fff;
     --track-info-color: var(--white);
     --track-info-hovered-color: var(--main-color);
+    --track-progress-bar-default-color: #4e4e4e;
+    --track-progress-bar-time-color: #d2d2d2;
 }
