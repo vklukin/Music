@@ -13,6 +13,8 @@ interface usePlayerContextProps {
     nextMusic: () => void;
     setPlayerState: TSetState<IPlayerInitialState>;
     setNewTrack: (track: ITrack) => void;
+    prevMusic: () => Promise<void>;
+    toggleMusic: () => void;
 }
 
 const { isRandom, volumeGain } = localStorageKeys;
@@ -22,7 +24,9 @@ export const usePlayerContextHooks = ({
     audio,
     setPlayerState,
     setNewTrack,
-    nextMusic
+    nextMusic,
+    prevMusic,
+    toggleMusic
 }: usePlayerContextProps) => {
     const [previousAudioTime, setPreviousAudioTime] = useState(0);
 
@@ -41,6 +45,11 @@ export const usePlayerContextHooks = ({
             }
         });
         audio.addEventListener("ended", nextMusic);
+        window.addEventListener("keyup", (e) => {
+            if (e.code === "KeyL") nextMusic();
+            else if (e.code === "KeyK" || e.code === "Space") toggleMusic();
+            else if (e.code === "KeyJ") prevMusic();
+        });
 
         apiQuery()
             .then((data) => setNewTrack(data))

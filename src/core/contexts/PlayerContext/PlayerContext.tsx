@@ -1,4 +1,9 @@
-import { createContext, useCallback, useMemo, useState } from "react";
+import {
+    createContext,
+    useCallback,
+    useMemo,
+    useState
+} from "react";
 
 import { ITrack } from "../../models/track";
 import { usePlayerContextHooks } from "./PlayerContext.hooks";
@@ -101,7 +106,9 @@ export const PlayerContextProvider = ({
         audio,
         setPlayerState,
         setNewTrack,
-        nextMusic
+        nextMusic,
+        prevMusic,
+        toggleMusic
     });
 
     const value = useMemo(
