@@ -44,7 +44,8 @@ export const PlayerContextProvider = ({
             setCurrentDuration(0);
             localStorage.setItem(currentTrackKey, JSON.stringify(track));
         },
-        [audio, setCurrentDuration, setCurrentTrack]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [setCurrentDuration, setCurrentTrack]
     );
 
     const playMusic = useCallback(() => {
@@ -60,12 +61,14 @@ export const PlayerContextProvider = ({
         if (actx.state === "suspended") actx.resume();
         audio.play();
         setIsTrackPlaying(true);
-    }, [audio, setIsTrackPlaying]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [setIsTrackPlaying]);
 
     const pauseMusic = useCallback(() => {
         audio.pause();
         setIsTrackPlaying(false);
-    }, [audio, setIsTrackPlaying]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [setIsTrackPlaying]);
 
     const toggleMusic = useCallback(() => {
         if (isTrackPlaying) pauseMusic();
