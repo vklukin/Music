@@ -1,3 +1,6 @@
+import { useAtomValue } from "jotai";
+
+import { isTrackPlayingAtom } from "../../../../core/atoms/Player";
 import { usePlayerContext } from "../../../../core/hooks/contexts/usePlayerContext";
 import { ReactComponent as Pause } from "../../../../assets/images/pause.svg";
 import { ReactComponent as Play } from "../../../../assets/images/play.svg";
@@ -13,7 +16,8 @@ export const PlayAndPauseButton: React.FC<PlayAndPauseButtonProps> = ({
     className,
     onClick
 }) => {
-    const { isPlaying, toggleMusic } = usePlayerContext();
+    const isTrackPlaying = useAtomValue(isTrackPlayingAtom);
+    const { toggleMusic } = usePlayerContext();
 
     function onButtonClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         toggleMusic();
@@ -23,10 +27,10 @@ export const PlayAndPauseButton: React.FC<PlayAndPauseButtonProps> = ({
     return (
         <Button
             className={className}
-            title={`${isPlaying ? "Пауза" : "Играть"} [K]`}
+            title={`${isTrackPlaying ? "Пауза" : "Играть"} [K]`}
             onClick={onButtonClick}
         >
-            {isPlaying ? <Pause /> : <Play />}
+            {isTrackPlaying ? <Pause /> : <Play />}
         </Button>
     );
 };

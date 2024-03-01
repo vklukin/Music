@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import { useAtom, useSetAtom } from "jotai";
+import { useEffect } from "react";
 
-import { TSetState } from "../../types/react";
-import { IPlayerInitialState } from "./PlayerContext";
 import { localStorageKeys } from "../../constants/localStorageKeys";
 import { trackAPI } from "../../api/track";
 import { ITrack } from "../../models/track";
 import { messages } from "../../utils/messages";
 import { isApiError } from "../../utils/isApiError";
+import {
+    isRandomTrackAtom,
+    previousAudioTimeAtom,
+    trackCurrentDurationAtom,
+    trackVolumeGainAtom
+} from "../../atoms/Player";
 
 interface usePlayerContextProps {
     audio: HTMLAudioElement;
     nextMusic: () => void;
-    setPlayerState: TSetState<IPlayerInitialState>;
     setNewTrack: (track: ITrack) => void;
     prevMusic: () => Promise<void>;
     toggleMusic: () => void;
@@ -22,13 +26,17 @@ const { error } = messages({});
 
 export const usePlayerContextHooks = ({
     audio,
-    setPlayerState,
     setNewTrack,
     nextMusic,
     prevMusic,
     toggleMusic
 }: usePlayerContextProps) => {
-    const [previousAudioTime, setPreviousAudioTime] = useState(0);
+    const [previousAudioTime, setPreviousAudioTime] = useAtom(
+        previousAudioTimeAtom
+    );
+    const setCurrentDuration = useSetAtom(trackCurrentDurationAtom);
+    const setIsRandomTrack = useSetAtom(isRandomTrackAtom);
+    const setVolumeGain = useSetAtom(trackVolumeGainAtom);
 
     async function apiQuery() {
         return await trackAPI.getRandomTrack();
@@ -37,10 +45,7 @@ export const usePlayerContextHooks = ({
     useEffect(() => {
         audio.addEventListener("timeupdate", () => {
             if (Math.trunc(audio.currentTime) > previousAudioTime) {
-                setPlayerState((prev) => ({
-                    ...prev,
-                    currentDuration: Math.trunc(audio.currentTime)
-                }));
+                setCurrentDuration(Math.trunc(audio.currentTime));
                 setPreviousAudioTime(Math.trunc(audio.currentTime));
             }
         });
@@ -55,13 +60,8 @@ export const usePlayerContextHooks = ({
             .then((data) => setNewTrack(data))
             .catch((e) => error(isApiError(e) ? e.message : e));
 
-        setPlayerState((prev) => ({
-            ...prev,
-            isRandom:
-                JSON.parse(localStorage.getItem(isRandom) as string) || false,
-            volumeGain:
-                JSON.parse(localStorage.getItem(volumeGain) as string) || 1
-        }));
+        setVolumeGain(JSON.parse(localStorage.getItem(volumeGain) as string) || 1)
+        setIsRandomTrack(JSON.parse(localStorage.getItem(isRandom) as string) || false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 };

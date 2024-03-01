@@ -1,20 +1,18 @@
-import {
-    createContext,
-    useCallback,
-    useMemo,
-    useState
-} from "react";
+import { createContext, useCallback, useMemo } from "react";
+import { useAtom, useSetAtom } from "jotai";
 
 import { ITrack } from "../../models/track";
 import { usePlayerContextHooks } from "./PlayerContext.hooks";
 import { localStorageKeys } from "../../constants/localStorageKeys";
 import { trackAPI } from "../../api/track";
+import {
+    currentTrackAtom,
+    isRandomTrackAtom,
+    isTrackPlayingAtom,
+    trackCurrentDurationAtom
+} from "../../atoms/Player";
 
 interface PlayerContextProps {
-    volumeGain: number;
-    currentDuration: number;
-    isPlaying: boolean;
-    currentTrack: ITrack | null;
     playMusic: () => void;
     pauseMusic: () => void;
     nextMusic: () => void;
@@ -23,22 +21,7 @@ interface PlayerContextProps {
     toggleRandom: () => void;
 }
 
-export interface IPlayerInitialState {
-    volumeGain: number;
-    currentDuration: number;
-    isPlaying: boolean;
-    currentTrack: ITrack | null;
-    isRandom: boolean;
-}
-
-const { currentTrack } = localStorageKeys;
-const playerInitialState: IPlayerInitialState = {
-    volumeGain: 1,
-    currentDuration: 0,
-    isPlaying: false,
-    currentTrack: null,
-    isRandom: false
-};
+const { currentTrack: currentTrackKey } = localStorageKeys;
 
 const actx = new AudioContext();
 const audioVolume = actx.createGain();
@@ -55,34 +38,36 @@ export const PlayerContextProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
-    const [playerState, setPlayerState] =
-        useState<IPlayerInitialState>(playerInitialState);
+    const setCurrentTrack = useSetAtom(currentTrackAtom);
+    const setCurrentDuration = useSetAtom(trackCurrentDurationAtom);
+    const setIsRandomTrack = useSetAtom(isRandomTrackAtom);
+    const [isTrackPlaying, setIsTrackPlaying] = useAtom(isTrackPlayingAtom);
 
-    const setNewTrack = useCallback<(track: ITrack) => void>((track) => {
-        audio.src = track.link;
-        setPlayerState((prev) => ({
-            ...prev,
-            currentTrack: track,
-            currentDuration: 0
-        }));
-        localStorage.setItem(currentTrack, JSON.stringify(track));
-    }, []);
+    const setNewTrack = useCallback<(track: ITrack) => void>(
+        (track) => {
+            audio.src = track.link;
+            setCurrentTrack(track);
+            setCurrentDuration(0);
+            localStorage.setItem(currentTrackKey, JSON.stringify(track));
+        },
+        [setCurrentDuration, setCurrentTrack]
+    );
 
     const playMusic = useCallback(() => {
         if (actx.state === "suspended") actx.resume();
         audio.play();
-        setPlayerState((prev) => ({ ...prev, isPlaying: true }));
-    }, []);
+        setIsTrackPlaying(true);
+    }, [setIsTrackPlaying]);
 
     const pauseMusic = useCallback(() => {
         audio.pause();
-        setPlayerState((prev) => ({ ...prev, isPlaying: false }));
-    }, []);
+        setIsTrackPlaying(false);
+    }, [setIsTrackPlaying]);
 
     const toggleMusic = useCallback(() => {
-        if (playerState.isPlaying) pauseMusic();
+        if (isTrackPlaying) pauseMusic();
         else playMusic();
-    }, [pauseMusic, playMusic, playerState.isPlaying]);
+    }, [isTrackPlaying, pauseMusic, playMusic]);
 
     const nextMusic = useCallback(async () => {
         setNewTrack(await trackAPI.getRandomTrack());
@@ -99,12 +84,11 @@ export const PlayerContextProvider = ({
     }, [playMusic, setNewTrack]);
 
     const toggleRandom = useCallback(() => {
-        setPlayerState((prev) => ({ ...prev, isRandom: !prev.isRandom }));
-    }, []);
+        setIsRandomTrack((prev) => !prev);
+    }, [setIsRandomTrack]);
 
     usePlayerContextHooks({
         audio,
-        setPlayerState,
         setNewTrack,
         nextMusic,
         prevMusic,
@@ -113,10 +97,6 @@ export const PlayerContextProvider = ({
 
     const value = useMemo(
         () => ({
-            volumeGain: playerState.volumeGain,
-            currentDuration: playerState.currentDuration,
-            isPlaying: playerState.isPlaying,
-            currentTrack: playerState.currentTrack,
             playMusic,
             pauseMusic,
             nextMusic,
@@ -124,18 +104,7 @@ export const PlayerContextProvider = ({
             toggleMusic,
             toggleRandom
         }),
-        [
-            playerState.currentDuration,
-            playerState.isPlaying,
-            playerState.volumeGain,
-            playerState.currentTrack,
-            nextMusic,
-            pauseMusic,
-            playMusic,
-            prevMusic,
-            toggleMusic,
-            toggleRandom
-        ]
+        [nextMusic, pauseMusic, playMusic, prevMusic, toggleMusic, toggleRandom]
     );
     return (
         <PlayerContext.Provider value={value}>

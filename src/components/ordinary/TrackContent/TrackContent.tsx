@@ -1,18 +1,18 @@
-import { useState } from "react";
 import classNames from "classnames/bind";
+import { useAtom, useAtomValue } from "jotai";
 
+import { currentTrackAtom } from "../../../core/atoms/Player";
 import styles from "./style.module.css";
 import imageNotFound from "../../../assets/images/imageNotFound.png";
-import { usePlayerContext } from "../../../core/hooks/contexts/usePlayerContext";
 import { SetTimeOut } from "../../../core/utils/SetTimeOut";
+import { isMouseEnterAtom } from "../../../core/atoms/TrackContent";
 
 const cn = classNames.bind(styles);
 const timeout = new SetTimeOut();
 
 export const TrackContent = () => {
-    const { currentTrack } = usePlayerContext();
-
-    const [isMouseEnter, setIsMouseEnter] = useState<boolean>(false);
+    const currentTrack = useAtomValue(currentTrackAtom);
+    const [isMouseEnter, setIsMouseEnter] = useAtom(isMouseEnterAtom);
 
     function onMouseEnter() {
         timeout.start(() => {
