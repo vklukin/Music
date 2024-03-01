@@ -13,3 +13,5 @@ export const isRandomTrackAtom = atom<boolean>(false);
 export const currentTrackAtom = atom<ITrack | null>(null);
 
 export const previousAudioTimeAtom = atom<number>(0);
+
+export const audioAtom = atom<HTMLAudioElement>(new Audio());

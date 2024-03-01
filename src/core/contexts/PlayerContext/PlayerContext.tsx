@@ -1,11 +1,12 @@
 import { createContext, useCallback, useMemo } from "react";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import { ITrack } from "../../models/track";
 import { usePlayerContextHooks } from "./PlayerContext.hooks";
 import { localStorageKeys } from "../../constants/localStorageKeys";
 import { trackAPI } from "../../api/track";
 import {
+    audioAtom,
     currentTrackAtom,
     isRandomTrackAtom,
     isTrackPlayingAtom,
@@ -22,15 +23,7 @@ interface PlayerContextProps {
 }
 
 const { currentTrack: currentTrackKey } = localStorageKeys;
-
-const actx = new AudioContext();
-const audioVolume = actx.createGain();
-const audio = new Audio();
-audio.crossOrigin = "anonymous";
-const source = actx.createMediaElementSource(audio);
-
-source.connect(audioVolume);
-audioVolume.connect(actx.destination);
+let actx: AudioContext | null = null;
 
 export const PlayerContext = createContext<PlayerContextProps | null>(null);
 export const PlayerContextProvider = ({
@@ -38,10 +31,11 @@ export const PlayerContextProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
+    const [isTrackPlaying, setIsTrackPlaying] = useAtom(isTrackPlayingAtom);
     const setCurrentTrack = useSetAtom(currentTrackAtom);
     const setCurrentDuration = useSetAtom(trackCurrentDurationAtom);
     const setIsRandomTrack = useSetAtom(isRandomTrackAtom);
-    const [isTrackPlaying, setIsTrackPlaying] = useAtom(isTrackPlayingAtom);
+    const audio = useAtomValue(audioAtom);
 
     const setNewTrack = useCallback<(track: ITrack) => void>(
         (track) => {
@@ -50,19 +44,28 @@ export const PlayerContextProvider = ({
             setCurrentDuration(0);
             localStorage.setItem(currentTrackKey, JSON.stringify(track));
         },
-        [setCurrentDuration, setCurrentTrack]
+        [audio, setCurrentDuration, setCurrentTrack]
     );
 
     const playMusic = useCallback(() => {
+        if (!actx) {
+            actx = new AudioContext();
+            const audioVolume = actx.createGain();
+            const source = actx.createMediaElementSource(audio);
+
+            source.connect(audioVolume);
+            audioVolume.connect(actx.destination);
+            actx.resume();
+        }
         if (actx.state === "suspended") actx.resume();
         audio.play();
         setIsTrackPlaying(true);
-    }, [setIsTrackPlaying]);
+    }, [audio, setIsTrackPlaying]);
 
     const pauseMusic = useCallback(() => {
         audio.pause();
         setIsTrackPlaying(false);
-    }, [setIsTrackPlaying]);
+    }, [audio, setIsTrackPlaying]);
 
     const toggleMusic = useCallback(() => {
         if (isTrackPlaying) pauseMusic();
@@ -81,14 +84,13 @@ export const PlayerContextProvider = ({
             setNewTrack(await trackAPI.getPreviousTrack());
         }
         playMusic();
-    }, [playMusic, setNewTrack]);
+    }, [audio, playMusic, setNewTrack]);
 
     const toggleRandom = useCallback(() => {
         setIsRandomTrack((prev) => !prev);
     }, [setIsRandomTrack]);
 
     usePlayerContextHooks({
-        audio,
         setNewTrack,
         nextMusic,
         prevMusic,
