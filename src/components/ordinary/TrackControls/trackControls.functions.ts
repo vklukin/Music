@@ -1,8 +1,10 @@
 import { useAtom } from "jotai";
+
 import { trackAPI } from "../../../core/api/track";
 import { useTheme } from "../../../core/hooks/contexts/useTheme";
 import { messages } from "../../../core/utils/messages";
 import { currentTrackAtom } from "../../../core/atoms/Player";
+import { usePlayerContext } from "../../../core/hooks/contexts/usePlayerContext";
 
 type TrackControlsFunctions = () => {
     onLikeButtonClick: () => Promise<void>;
@@ -12,6 +14,7 @@ type TrackControlsFunctions = () => {
 export const useTrackControlsFunctions: TrackControlsFunctions = () => {
     const { theme } = useTheme();
     const { error, success } = messages({ theme: theme });
+    const { nextMusic } = usePlayerContext();
 
     const [currentTrack, setCurrentTrack] = useAtom(currentTrackAtom);
 
@@ -78,6 +81,7 @@ export const useTrackControlsFunctions: TrackControlsFunctions = () => {
                         : null
                 );
                 success("Трек теперь игнорируется");
+                nextMusic()
             } else {
                 setCurrentTrack((prev) =>
                     prev
