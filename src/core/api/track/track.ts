@@ -95,7 +95,30 @@ class Track {
             if (isApiError(e)) {
                 throw new Error(e.message);
             }
-            throw new Error("Произошла ошибка при запросе");
+            throw new Error(
+                "Произошла ошибка при запросе для избранности трека"
+            );
+        }
+    }
+
+    async ignoreForTrack(
+        trackId: number | null | undefined,
+        actionType: "add" | "remove"
+    ): Promise<ITrackLikeAndIgnoreResponse> {
+        if (!trackId) {
+            throw new Error("Не найден id трека");
+        }
+
+        try {
+            const { data } = await api.post<ITrackLikeAndIgnoreResponse>(
+                `/track/${trackId}/ignore/${actionType}`
+            );
+            return data;
+        } catch (e) {
+            if (isApiError(e)) {
+                throw new Error(e.message);
+            }
+            throw new Error("Произошла ошибка при для игнорирования трека");
         }
     }
 }

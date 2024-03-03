@@ -1,5 +1,5 @@
 import "./styles/global.css";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 import { Router } from "./router";
 import { RouterLayout } from "./core/layouts/RouterLayout";

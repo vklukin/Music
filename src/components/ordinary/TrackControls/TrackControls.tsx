@@ -1,4 +1,4 @@
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import classNames from "classnames/bind";
 
 import styles from "./style.module.css";
@@ -8,63 +8,17 @@ import { ReactComponent as Plus } from "../../../assets/images/plus.svg";
 import { ReactComponent as CircleCrossed } from "../../../assets/images/circle-crossed.svg";
 
 import { currentTrackAtom } from "../../../core/atoms/Player";
-import { trackAPI } from "../../../core/api/track";
-import { messages } from "../../../core/utils/messages";
-import { useTheme } from "../../../core/hooks/contexts/useTheme";
+import { useTrackControlsFunctions } from "./trackControls.functions";
 
 import { Button } from "../../ui/Button";
 
 const cn = classNames.bind(styles);
 
 export const TrackControls = () => {
-    const [currentTrack, setCurrentTrack] = useAtom(currentTrackAtom);
-    const { theme } = useTheme();
-    const { error, success } = messages({ theme: theme });
+    const currentTrack = useAtomValue(currentTrackAtom);
+    const { onIgnoreButtonClick, onLikeButtonClick } =
+        useTrackControlsFunctions();
 
-    async function onLikeButtonClick() {
-        try {
-            const response = await trackAPI.likeForTrack(
-                currentTrack?.id,
-                currentTrack?.state.favourite ? "remove" : "add"
-            );
-
-            if (response.status.message === "added") {
-                setCurrentTrack((prev) =>
-                    prev
-                        ? {
-                              ...prev,
-                              state: {
-                                  ignore: prev?.state.ignore,
-                                  favourite: true
-                              }
-                          }
-                        : null
-                );
-                success("Трек был добавлен в избранное");
-            } else {
-                setCurrentTrack((prev) =>
-                    prev
-                        ? {
-                              ...prev,
-                              state: {
-                                  ignore: prev?.state.ignore,
-                                  favourite: false
-                              }
-                          }
-                        : null
-                );
-                success("Трек был убран из избранного");
-            }
-        } catch (e) {
-            if (typeof e === "string") {
-                error(e);
-            } else {
-                console.error(e);
-            }
-        }
-    }
-
-    // TODO: добавить функционал кнопкам
     return (
         <div className={cn("track-controls__wrapper")}>
             <Button
@@ -86,6 +40,7 @@ export const TrackControls = () => {
                 <Plus />
             </Button>
             <Button
+                onClick={onIgnoreButtonClick}
                 className={cn("button", {
                     ingored: currentTrack?.state.ignore ?? false
                 })}
