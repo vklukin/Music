@@ -31,3 +31,8 @@ button {
     background: none;
     border: none;
 }
+
+/* Toastify */
+.Toastify .Toastify__toast-body > div {
+    font-size: 1.4rem;
+}

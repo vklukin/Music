@@ -1,5 +1,9 @@
 import { api } from "../../configs/api";
-import { ITrack, ITrackId } from "../../models/track";
+import {
+    ITrack,
+    ITrackId,
+    ITrackLikeAndIgnoreResponse
+} from "../../models/track";
 import { isApiError } from "../../utils/isApiError";
 
 class Track {
@@ -71,6 +75,27 @@ class Track {
                 throw new Error(e.message);
             }
             throw new Error("Произошла ошибка при запросе предыдущего трека");
+        }
+    }
+
+    async likeForTrack(
+        trackId: number | null | undefined,
+        actionType: "add" | "remove"
+    ): Promise<ITrackLikeAndIgnoreResponse> {
+        if (!trackId) {
+            throw new Error("Не найден id трека");
+        }
+
+        try {
+            const { data } = await api.post<ITrackLikeAndIgnoreResponse>(
+                `/track/${trackId}/like/${actionType}`
+            );
+            return data;
+        } catch (e) {
+            if (isApiError(e)) {
+                throw new Error(e.message);
+            }
+            throw new Error("Произошла ошибка при запросе");
         }
     }
 }

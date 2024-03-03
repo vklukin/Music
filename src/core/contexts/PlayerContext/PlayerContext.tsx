@@ -59,12 +59,12 @@ export const PlayerContextProvider = ({
             actx.resume();
         }
         if (actx.state === "suspended") actx.resume();
-        setIsTrackPlaying(true)
+        setIsTrackPlaying(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const pauseMusic = useCallback(() => {
-        setIsTrackPlaying(false)
+        setIsTrackPlaying(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -74,7 +74,7 @@ export const PlayerContextProvider = ({
     }, [isTrackPlaying, pauseMusic, playMusic]);
 
     const nextMusic = useCallback(async () => {
-        setNewTrack(await trackAPI.getRandomTrack());
+        setNewTrack(await trackAPI.getRandomTrack()); // TODO: переделать с рандомного трека на треки с плейлистом
         playMusic();
     }, [playMusic, setNewTrack]);
 
@@ -85,7 +85,7 @@ export const PlayerContextProvider = ({
             setNewTrack(await trackAPI.getPreviousTrack());
         }
         playMusic();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [playMusic, setNewTrack]);
 
     const toggleRandom = useCallback(() => {

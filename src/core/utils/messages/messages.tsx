@@ -9,7 +9,7 @@ interface IOptionsProps {
 export const messages = ({ closeDelay, position, theme }: IOptionsProps) => {
     let _position: ToastPosition = "top-right";
     let _closeDelay = 7000;
-    let _theme: Theme = "colored";
+    let _theme: Theme = "light";
 
     if (position !== undefined) _position = position;
     if (closeDelay !== undefined) _closeDelay = closeDelay;

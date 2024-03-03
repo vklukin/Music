@@ -23,3 +23,11 @@
 .button svg path[stroke]:not([stroke="none"]) {
     stroke: var(--main-color);
 }
+
+.button.ingored svg path[fill]:not([fill="none"]) {
+    fill: var(--secondary-color);
+}
+
+.button.ingored svg path[stroke]:not([stroke="none"]) {
+    stroke: var(--secondary-color);
+}
