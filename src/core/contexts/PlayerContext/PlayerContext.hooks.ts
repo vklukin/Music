@@ -75,8 +75,6 @@ export const usePlayerContextHooks = ({
     }, []);
 
     useEffect(() => {
-        console.log(isTrackPlaying);
-
         if (isTrackPlaying) {
             audio.play();
         } else {
