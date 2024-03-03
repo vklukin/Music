@@ -9,6 +9,7 @@ import { isApiError } from "../../utils/isApiError";
 import {
     audioAtom,
     isRandomTrackAtom,
+    isTrackPlayingAtom,
     previousAudioTimeAtom,
     trackCurrentDurationAtom,
     trackVolumeGainAtom
@@ -36,6 +37,7 @@ export const usePlayerContextHooks = ({
     const setCurrentDuration = useSetAtom(trackCurrentDurationAtom);
     const setIsRandomTrack = useSetAtom(isRandomTrackAtom);
     const setVolumeGain = useSetAtom(trackVolumeGainAtom);
+    const isTrackPlaying = useAtomValue(isTrackPlayingAtom);
     const audio = useAtomValue(audioAtom);
 
     async function apiQuery() {
@@ -44,7 +46,7 @@ export const usePlayerContextHooks = ({
 
     useEffect(() => {
         audio.crossOrigin = "anonymous";
-        
+
         audio.addEventListener("timeupdate", () => {
             if (Math.trunc(audio.currentTime) > previousAudioTime) {
                 setCurrentDuration(Math.trunc(audio.currentTime));
@@ -52,9 +54,10 @@ export const usePlayerContextHooks = ({
             }
         });
         audio.addEventListener("ended", nextMusic);
-        window.addEventListener("keyup", (e) => {
+        window.addEventListener("keydown", (e) => {
             if (e.code === "KeyL") nextMusic();
-            else if (e.code === "KeyK" || e.code === "Space") toggleMusic();
+            else if (e.code === "KeyK" || e.code === "Space") toggleMusic(); // TODO: пофиксить выболнение функции
+
             else if (e.code === "KeyJ") prevMusic();
         });
 
@@ -68,7 +71,17 @@ export const usePlayerContextHooks = ({
         setIsRandomTrack(
             JSON.parse(localStorage.getItem(isRandom) as string) || false
         );
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        console.log(isTrackPlaying);
+
+        if (isTrackPlaying) {
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isTrackPlaying]);
 };

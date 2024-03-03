@@ -59,16 +59,14 @@ export const PlayerContextProvider = ({
             actx.resume();
         }
         if (actx.state === "suspended") actx.resume();
-        audio.play();
-        setIsTrackPlaying(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [setIsTrackPlaying]);
+        setIsTrackPlaying(true)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const pauseMusic = useCallback(() => {
-        audio.pause();
-        setIsTrackPlaying(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [setIsTrackPlaying]);
+        setIsTrackPlaying(false)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const toggleMusic = useCallback(() => {
         if (isTrackPlaying) pauseMusic();
@@ -87,7 +85,8 @@ export const PlayerContextProvider = ({
             setNewTrack(await trackAPI.getPreviousTrack());
         }
         playMusic();
-    }, [audio, playMusic, setNewTrack]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [playMusic, setNewTrack]);
 
     const toggleRandom = useCallback(() => {
         setIsRandomTrack((prev) => !prev);
