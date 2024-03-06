@@ -56,8 +56,7 @@ export const usePlayerContextHooks = ({
         audio.addEventListener("ended", nextMusic);
         window.addEventListener("keydown", (e) => {
             if (e.code === "KeyL") nextMusic();
-            else if (e.code === "KeyK" || e.code === "Space")
-                toggleMusic(); // TODO: пофиксить выболнение функции
+            else if (e.code === "KeyK" || e.code === "Space") toggleMusic();
             else if (e.code === "KeyJ") prevMusic();
         });
 

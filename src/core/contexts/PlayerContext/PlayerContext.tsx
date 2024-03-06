@@ -1,5 +1,5 @@
 import { createContext, useCallback, useMemo } from "react";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import { ITrack } from "../../models/track";
 import { usePlayerContextHooks } from "./PlayerContext.hooks";
@@ -31,7 +31,7 @@ export const PlayerContextProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
-    const [isTrackPlaying, setIsTrackPlaying] = useAtom(isTrackPlayingAtom);
+    const setIsTrackPlaying = useSetAtom(isTrackPlayingAtom);
     const setCurrentTrack = useSetAtom(currentTrackAtom);
     const setCurrentDuration = useSetAtom(trackCurrentDurationAtom);
     const setIsRandomTrack = useSetAtom(isRandomTrackAtom);
@@ -69,9 +69,9 @@ export const PlayerContextProvider = ({
     }, []);
 
     const toggleMusic = useCallback(() => {
-        if (isTrackPlaying) pauseMusic();
+        if (!audio.paused) pauseMusic();
         else playMusic();
-    }, [isTrackPlaying, pauseMusic, playMusic]);
+    }, [audio.paused, pauseMusic, playMusic]);
 
     const nextMusic = useCallback(async () => {
         setNewTrack(await trackAPI.getRandomTrack()); // TODO: переделать с рандомного трека на треки с плейлистом
