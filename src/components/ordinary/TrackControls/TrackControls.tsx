@@ -19,6 +19,7 @@ export const TrackControls = () => {
     const { onIgnoreButtonClick, onLikeButtonClick } =
         useTrackControlsFunctions();
 
+    // TODO: доделать кнопку добавления в плейлисты
     return (
         <div className={cn("track-controls__wrapper")}>
             <Button

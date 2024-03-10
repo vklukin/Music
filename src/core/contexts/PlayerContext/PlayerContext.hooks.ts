@@ -9,7 +9,6 @@ import { isApiError } from "../../utils/isApiError";
 import {
     audioAtom,
     isRandomTrackAtom,
-    isTrackPlayingAtom,
     previousAudioTimeAtom,
     trackCurrentDurationAtom,
     trackVolumeGainAtom
@@ -37,7 +36,6 @@ export const usePlayerContextHooks = ({
     const setCurrentDuration = useSetAtom(trackCurrentDurationAtom);
     const setIsRandomTrack = useSetAtom(isRandomTrackAtom);
     const setVolumeGain = useSetAtom(trackVolumeGainAtom);
-    const isTrackPlaying = useAtomValue(isTrackPlayingAtom);
     const audio = useAtomValue(audioAtom);
 
     async function apiQuery() {
@@ -72,13 +70,4 @@ export const usePlayerContextHooks = ({
         );
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    useEffect(() => {
-        if (isTrackPlaying) {
-            audio.play();
-        } else {
-            audio.pause();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isTrackPlaying]);
 };

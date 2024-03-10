@@ -60,11 +60,13 @@ export const PlayerContextProvider = ({
         }
         if (actx.state === "suspended") actx.resume();
         setIsTrackPlaying(true);
+        audio.play();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const pauseMusic = useCallback(() => {
         setIsTrackPlaying(false);
+        audio.pause();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
